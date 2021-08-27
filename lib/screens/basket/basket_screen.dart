@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_delivery_sing/blocs/basket/basket_bloc.dart';
 
 class BasketScreen extends StatelessWidget {
   const BasketScreen({Key? key}) : super(key: key);
@@ -75,13 +77,27 @@ class BasketScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.headline6,
                     ),
                   ),
-                  SizedBox(
-                    width: 100,
-                    child: SwitchListTile(
-                      dense: false,
-                      value: false,
-                      onChanged: (bool? newValue) {},
-                    ),
+                  BlocBuilder<BasketBloc, BasketState>(
+                    builder: (context, state) {
+                      if (state is BasketLoading) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (state is BasketLoaded) {
+                        return SizedBox(
+                          width: 100,
+                          child: SwitchListTile(
+                            dense: true,
+                            value: state.basket.cutlery,
+                            onChanged: (bool? newValue) {
+                              context.read<BasketBloc>().add(ToggleSwitch());
+                            },
+                          ),
+                        );
+                      } else {
+                        return Text('Something went wrong!');
+                      }
+                    },
                   )
                 ],
               ),
@@ -93,45 +109,86 @@ class BasketScreen extends StatelessWidget {
                   .headline4!
                   .copyWith(color: Theme.of(context).accentColor),
             ),
-            ListView.builder(
-                shrinkWrap: true,
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.only(top: 5),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Row(
-                      children: [
-                        Text(
-                          '1x',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(color: Theme.of(context).accentColor),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Expanded(
-                          child: Text(
-                            'Pizza Margherita',
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                        ),
-                        Text(
-                          '\$4.99',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                      ],
-                    ),
+            BlocBuilder<BasketBloc, BasketState>(
+              builder: (context, state) {
+                if (state is BasketLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
                   );
-                }),
+                } else if (state is BasketLoaded) {
+                  return state.basket.items.length == 0
+                      ? Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(top: 5),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'No Items in the Basket',
+                                textAlign: TextAlign.left,
+                                style: Theme.of(context).textTheme.headline6,
+                              )
+                            ],
+                          ),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: state.basket
+                              .itemQuantity(state.basket.items)
+                              .keys
+                              .length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              width: double.infinity,
+                              margin: const EdgeInsets.only(top: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    '${state.basket.itemQuantity(state.basket.items).entries.elementAt(index).value}x',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline6!
+                                        .copyWith(
+                                            color:
+                                                Theme.of(context).accentColor),
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      '${state.basket.itemQuantity(state.basket.items).keys.elementAt(index).name}',
+
+                                      style:
+                                          Theme.of(context).textTheme.headline6,
+                                    ),
+                                  ),
+                                  Text(
+                                    '\$${state.basket.itemQuantity(state.basket.items).keys.elementAt(index).price}',
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                } else {
+                  return Text('Something went wrong!');
+                }
+              },
+            ),
             Container(
               width: double.infinity,
               height: 100,
