@@ -25,51 +25,53 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        appBar: CustomAppBar(),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount: Category.categories.length,
-                      itemBuilder: (context, index) {
-                        return CategoryBox(
-                            category: Category.categories[index]);
-                      }),
-                ),
+      backgroundColor: Theme.of(context).backgroundColor,
+      appBar: CustomAppBar(),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                height: 100,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemCount: Category.categories.length,
+                    itemBuilder: (context, index) {
+                      return CategoryBox(category: Category.categories[index]);
+                    }),
               ),
-              FoodSearchBox(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: 125,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount: Promo.promos.length,
-                      itemBuilder: (context, index) {
-                        return PromoBox(promo: Promo.promos[index],);
-                      }),
-                ),
+            ),
+            FoodSearchBox(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                height: 125,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemCount: Promo.promos.length,
+                    itemBuilder: (context, index) {
+                      return PromoBox(
+                        promo: Promo.promos[index],
+                      );
+                    }),
               ),
-
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'Top Rated',
-                      style: Theme.of(context).textTheme.headline4,
-                    )),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.45,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Top Rated',
+                    style: Theme.of(context).textTheme.headline4,
+                  )),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.45,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 40),
                 child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: Restaurant.restaurants.length,
@@ -78,8 +80,10 @@ class HomeScreen extends StatelessWidget {
                           restaurant: Restaurant.restaurants[index]);
                     }),
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

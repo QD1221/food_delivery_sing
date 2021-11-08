@@ -7,6 +7,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget{
   Widget build(BuildContext context) {
     return AppBar(
       leading: IconButton(onPressed: () {}, icon: Icon(Icons.person)),
+      backgroundColor: Theme.of(context).primaryColor,
       centerTitle: false,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -6,6 +6,7 @@ import 'package:food_delivery_sing/models/basket_model.dart';
 import 'package:food_delivery_sing/models/menu_item_model.dart';
 
 part 'basket_event.dart';
+
 part 'basket_state.dart';
 
 class BasketBloc extends Bloc<BasketEvent, BasketState> {
@@ -21,6 +22,8 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
       yield* _mapAddBasketToState(event, state);
     } else if (event is RemoveItem) {
       yield* _mapRemoveBasketToState(event, state);
+    } else if (event is RemoveAllItem) {
+      yield* _mapRemoveAllBasketToState(event, state);
     } else if (event is ToggleSwitch) {
       yield* _mapToggleSwitchToState(event, state);
     }
@@ -41,8 +44,10 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     if (state is BasketLoaded) {
       try {
         yield BasketLoaded(
-            basket: state.basket.copyWith(
-                items: List.from(state.basket.items)..add(event.item)));
+          basket: state.basket.copyWith(
+            items: List.from(state.basket.items)..add(event.item),
+          ),
+        );
       } catch (_) {}
     }
   }
@@ -54,8 +59,26 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     if (state is BasketLoaded) {
       try {
         yield BasketLoaded(
-            basket: state.basket.copyWith(
-                items: List.from(state.basket.items)..remove(event.item)));
+          basket: state.basket.copyWith(
+            items: List.from(state.basket.items)..remove(event.item),
+          ),
+        );
+      } catch (_) {}
+    }
+  }
+
+  Stream<BasketState> _mapRemoveAllBasketToState(
+    RemoveAllItem event,
+    BasketState state,
+  ) async* {
+    if (state is BasketLoaded) {
+      try {
+        yield BasketLoaded(
+          basket: state.basket.copyWith(
+            items: List.from(state.basket.items)
+              ..removeWhere((item) => item == event.item),
+          ),
+        );
       } catch (_) {}
     }
   }

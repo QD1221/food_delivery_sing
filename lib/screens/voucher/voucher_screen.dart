@@ -19,6 +19,7 @@ class VoucherScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Voucher'),
+        backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
       ),
       body: ElevatedButton(

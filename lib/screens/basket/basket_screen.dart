@@ -22,10 +22,13 @@ class BasketScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Basket'),
+        backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/edit-basket');
+            },
             icon: Icon(Icons.edit),
           )
         ],
@@ -170,7 +173,6 @@ class BasketScreen extends StatelessWidget {
                                   Expanded(
                                     child: Text(
                                       '${state.basket.itemQuantity(state.basket.items).keys.elementAt(index).name}',
-
                                       style:
                                           Theme.of(context).textTheme.headline6,
                                     ),
@@ -274,61 +276,76 @@ class BasketScreen extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Subtotal',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      Text(
-                        '\$20.0',
-                        style: Theme.of(context).textTheme.headline6,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Delivery',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      Text(
-                        '\$5.0',
-                        style: Theme.of(context).textTheme.headline6,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Total',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline5!
-                            .copyWith(color: Theme.of(context).accentColor),
-                      ),
-                      Text(
-                        '\$25.0',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline5!
-                            .copyWith(color: Theme.of(context).accentColor),
-                      )
-                    ],
-                  )
-                ],
+              child: BlocBuilder<BasketBloc, BasketState>(
+                builder: (context, state) {
+                  if (state is BasketLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (state is BasketLoaded) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Subtotal',
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
+                            Text(
+                              '\$${state.basket.subtotalString}',
+                              style: Theme.of(context).textTheme.headline6,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Delivery',
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
+                            Text(
+                              '\$5.0',
+                              style: Theme.of(context).textTheme.headline6,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Total',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5!
+                                  .copyWith(
+                                      color: Theme.of(context).accentColor),
+                            ),
+                            Text(
+                              '\$${state.basket.totalString}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5!
+                                  .copyWith(
+                                      color: Theme.of(context).accentColor),
+                            )
+                          ],
+                        )
+                      ],
+                    );
+                  } else {
+                    return Text('Something went wrong!');
+                  }
+                },
               ),
             )
           ],

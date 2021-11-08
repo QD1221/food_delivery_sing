@@ -19,6 +19,7 @@ class DeliveryTimeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Delivery Time'),
+        backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
       ),
       body: ElevatedButton(

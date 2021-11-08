@@ -3,6 +3,7 @@ import 'package:food_delivery_sing/models/restaurant_model.dart';
 import 'package:food_delivery_sing/screens/basket/basket_screen.dart';
 import 'package:food_delivery_sing/screens/checkout/checkout_screen.dart';
 import 'package:food_delivery_sing/screens/delivery_time/delivery_time_screen.dart';
+import 'package:food_delivery_sing/screens/edit_basket/edit_basket_screen.dart';
 import 'package:food_delivery_sing/screens/filter/filter_screen.dart';
 import 'package:food_delivery_sing/screens/home/home_screen.dart';
 import 'package:food_delivery_sing/screens/location/location_screen.dart';
@@ -22,6 +23,8 @@ class AppRouter {
         return LocationScreen.route();
       case BasketScreen.routeName:
         return BasketScreen.route();
+      case EditBasketScreen.routeName:
+        return EditBasketScreen.route();
       case CheckoutScreen.routeName:
         return CheckoutScreen.route();
       case DeliveryTimeScreen.routeName:

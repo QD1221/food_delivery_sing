@@ -26,6 +26,7 @@ class RestaurantListingScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Restaurants'),
+        backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
       ),
       body: Padding(

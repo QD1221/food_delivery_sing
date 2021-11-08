@@ -24,6 +24,7 @@ class FilterScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Filter'),
+        backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
       ),
       bottomNavigationBar: BottomAppBar(
