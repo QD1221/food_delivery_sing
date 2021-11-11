@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:food_delivery_sing/models/basket_model.dart';
 import 'package:food_delivery_sing/models/menu_item_model.dart';
+import 'package:food_delivery_sing/models/voucher_model.dart';
 
 part 'basket_event.dart';
 
@@ -26,6 +27,8 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
       yield* _mapRemoveAllBasketToState(event, state);
     } else if (event is ToggleSwitch) {
       yield* _mapToggleSwitchToState(event, state);
+    } else if (event is AddVoucher) {
+      yield* _mapAddVoucherToState(event, state);
     }
   }
 
@@ -92,6 +95,21 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
         yield BasketLoaded(
           basket: state.basket.copyWith(
             cutlery: !state.basket.cutlery,
+          ),
+        );
+      } catch (_) {}
+    }
+  }
+
+  Stream<BasketState> _mapAddVoucherToState(
+    AddVoucher event,
+    BasketState state,
+  ) async* {
+    if (state is BasketLoaded) {
+      try {
+        yield BasketLoaded(
+          basket: state.basket.copyWith(
+            voucher: event.voucher,
           ),
         );
       } catch (_) {}

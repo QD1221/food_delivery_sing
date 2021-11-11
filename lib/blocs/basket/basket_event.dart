@@ -7,12 +7,12 @@ abstract class BasketEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class StartBasket extends BasketEvent{
+class StartBasket extends BasketEvent {
   @override
   List<Object> get props => [];
 }
 
-class AddItem extends BasketEvent{
+class AddItem extends BasketEvent {
   final MenuItem item;
 
   AddItem(this.item);
@@ -21,25 +21,35 @@ class AddItem extends BasketEvent{
   List<Object> get props => [];
 }
 
-class RemoveItem extends BasketEvent{
+class RemoveItem extends BasketEvent {
   final MenuItem item;
 
   RemoveItem(this.item);
+
   @override
   List<Object> get props => [];
 }
 
-class RemoveAllItem extends BasketEvent{
+class RemoveAllItem extends BasketEvent {
   final MenuItem item;
 
   RemoveAllItem(this.item);
+
   @override
   List<Object> get props => [];
 }
 
-class ToggleSwitch extends BasketEvent{
+class ToggleSwitch extends BasketEvent {
   ToggleSwitch();
 
   @override
   List<Object> get props => [];
+}
+
+class AddVoucher extends BasketEvent {
+  final Voucher voucher;
+
+  const AddVoucher(this.voucher);
+  @override
+  List<Object> get props => [voucher];
 }

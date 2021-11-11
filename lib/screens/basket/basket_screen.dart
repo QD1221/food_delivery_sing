@@ -164,8 +164,8 @@ class BasketScreen extends StatelessWidget {
                                         .textTheme
                                         .headline6!
                                         .copyWith(
-                                            color:
-                                                Theme.of(context).accentColor),
+                                            color: Theme.of(context)
+                                                .accentColor),
                                   ),
                                   SizedBox(
                                     width: 20,
@@ -221,7 +221,8 @@ class BasketScreen extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .headline6!
-                              .copyWith(color: Theme.of(context).accentColor),
+                              .copyWith(
+                                  color: Theme.of(context).accentColor),
                         ),
                       )
                     ],
@@ -241,27 +242,43 @@ class BasketScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        'Do you have a voucher?',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Apply',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(color: Theme.of(context).accentColor),
-                        ),
-                      )
-                    ],
+                  BlocBuilder<BasketBloc, BasketState>(
+                    builder: (context, state) {
+                      if (state is BasketLoaded) {
+                        return (state.basket.voucher == null)
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Text(
+                                    'Do you have a voucher?',
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, '/voucher');
+                                    },
+                                    child: Text(
+                                      'Apply',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .accentColor),
+                                    ),
+                                  )
+                                ],
+                              )
+                            : Text('Your voucher is added!',
+                                style: Theme.of(context).textTheme.headline6);
+                      } else {
+                        return Text('Something went wrong!');
+                      }
+                    },
                   ),
                   SvgPicture.asset('assets/delivery_time.svg'),
                 ],
@@ -328,7 +345,8 @@ class BasketScreen extends StatelessWidget {
                                   .textTheme
                                   .headline5!
                                   .copyWith(
-                                      color: Theme.of(context).accentColor),
+                                      color: Theme.of(context)
+                                          .accentColor),
                             ),
                             Text(
                               '\$${state.basket.totalString}',
@@ -336,7 +354,8 @@ class BasketScreen extends StatelessWidget {
                                   .textTheme
                                   .headline5!
                                   .copyWith(
-                                      color: Theme.of(context).accentColor),
+                                      color: Theme.of(context)
+                                          .accentColor),
                             )
                           ],
                         )
