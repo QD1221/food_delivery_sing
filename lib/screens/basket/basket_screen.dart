@@ -164,8 +164,8 @@ class BasketScreen extends StatelessWidget {
                                         .textTheme
                                         .headline6!
                                         .copyWith(
-                                            color: Theme.of(context)
-                                                .accentColor),
+                                            color:
+                                                Theme.of(context).accentColor),
                                   ),
                                   SizedBox(
                                     width: 20,
@@ -204,28 +204,46 @@ class BasketScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SvgPicture.asset('assets/delivery_time.svg'),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        'Delivery in 20 minutes',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Change',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(
-                                  color: Theme.of(context).accentColor),
-                        ),
-                      )
-                    ],
+                  BlocBuilder<BasketBloc, BasketState>(
+                    builder: (context, state) {
+                      if (state is BasketLoaded) {
+                        return (state.basket.deliveryTime == null)
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  Text(
+                                    'Delivery in 20 minutes',
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, '/delivery-time');
+                                    },
+                                    child: Text(
+                                      'Change',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .accentColor),
+                                    ),
+                                  )
+                                ],
+                              )
+                            : Text(
+                                'Delivery at ${state.basket.deliveryTime!.value}',
+                                style: Theme.of(context).textTheme.headline6,
+                              );
+                      } else {
+                        return Text('Something went wrong!');
+                      }
+                    },
                   )
                 ],
               ),
@@ -345,8 +363,7 @@ class BasketScreen extends StatelessWidget {
                                   .textTheme
                                   .headline5!
                                   .copyWith(
-                                      color: Theme.of(context)
-                                          .accentColor),
+                                      color: Theme.of(context).accentColor),
                             ),
                             Text(
                               '\$${state.basket.totalString}',
@@ -354,8 +371,7 @@ class BasketScreen extends StatelessWidget {
                                   .textTheme
                                   .headline5!
                                   .copyWith(
-                                      color: Theme.of(context)
-                                          .accentColor),
+                                      color: Theme.of(context).accentColor),
                             )
                           ],
                         )

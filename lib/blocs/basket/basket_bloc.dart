@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:food_delivery_sing/models/basket_model.dart';
+import 'package:food_delivery_sing/models/delivery_time_model.dart';
 import 'package:food_delivery_sing/models/menu_item_model.dart';
 import 'package:food_delivery_sing/models/voucher_model.dart';
 
@@ -29,6 +30,8 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
       yield* _mapToggleSwitchToState(event, state);
     } else if (event is AddVoucher) {
       yield* _mapAddVoucherToState(event, state);
+    } else if (event is SelectDeliveryTime) {
+      yield* _mapSelectDeliveryTimeToState(event, state);
     }
   }
 
@@ -110,6 +113,21 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
         yield BasketLoaded(
           basket: state.basket.copyWith(
             voucher: event.voucher,
+          ),
+        );
+      } catch (_) {}
+    }
+  }
+
+  Stream<BasketState> _mapSelectDeliveryTimeToState(
+    SelectDeliveryTime event,
+    BasketState state,
+  ) async* {
+    if (state is BasketLoaded) {
+      try {
+        yield BasketLoaded(
+          basket: state.basket.copyWith(
+            deliveryTime: event.deliveryTime,
           ),
         );
       } catch (_) {}
